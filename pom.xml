@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>com.livecoding</groupId>
 	<artifactId>chistes</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<version>1</version>
+	<packaging>jar</packaging>
 	<name>chistes chuck norris</name>
 	<description>App para mostrar chistes de chucknorris</description>
 	<properties>
