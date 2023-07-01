@@ -8,12 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-
-
-// chistes/chucknorris/
-
 @RestController
 @RequestMapping(value="/chucknorris")
 public class ChuckNorrisController {
@@ -24,7 +19,7 @@ public class ChuckNorrisController {
 	}
 
 	@GetMapping(value={"/","","index"})
-	public List<ChuckNorrisJokeDTO> all (Model model){
+	public List<ChuckNorrisJokeDTO> all (){
 		return chuckNorrisServices.getAll();
 	}
 

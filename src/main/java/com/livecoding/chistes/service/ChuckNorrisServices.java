@@ -3,34 +3,25 @@ package com.livecoding.chistes.service;
 import com.livecoding.chistes.dto.ChuckNorrisJokeDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class ChuckNorrisServices {
 	public List<ChuckNorrisJokeDTO> getAll(){
-
 		String url = "https://api.chucknorris.io/jokes/random";
-		RestTemplate restTemplate = new RestTemplate();
+		WebClient webClient = WebClient.create(url);
 
-		List<ChuckNorrisJokeDTO> listChistes = new ArrayList<>();
-
-		for (int i = 0; i < 25; i++) {
-			LinkedHashMap<String, String> chistes = restTemplate.getForObject(url,LinkedHashMap.class);
-
-			LinkedHashMap<String, String> finalChistes = chistes;
-			if (!listChistes.stream().anyMatch(ch-> ch.id == finalChistes.get("id"))){
-				LinkedHashMap<String, String> chiste1 = new LinkedHashMap<String, String>();
-				chiste1.put("id", finalChistes.get("id"));
-				chiste1.put("value", finalChistes.get("value"));
-				chiste1.put("url", finalChistes.get("url"));
-				listChistes.add(chiste1);
-			}
-		}
-		
-		return listChistes;
+		Flux<ChuckNorrisJokeDTO> listChistes = Flux.range(0, 25)
+				.flatMap(i -> webClient.get()
+						.retrieve()
+						.bodyToMono(ChuckNorrisJokeDTO.class))
+				.distinct(ChuckNorrisJokeDTO::getId)
+				.take(25)
+				.timeout(Duration.ofSeconds(3));
+		return listChistes.collectList().block();
 	}
 }
