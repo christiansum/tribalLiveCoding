@@ -2,7 +2,7 @@ package com.livecoding.chistes.service;
 
 import com.livecoding.chistes.dto.ChuckNorrisJokeDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
